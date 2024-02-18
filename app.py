@@ -58,8 +58,8 @@ def vertex_palm():
         user_input = request.form['user_input']
     
     result = conversational_retrieval({"question": user_input})
-    #content = response(chat_model,user_input)
-    return jsonify(content=result)
+    content = response(result)
+    return jsonify(content=content)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080, host='0.0.0.0')
