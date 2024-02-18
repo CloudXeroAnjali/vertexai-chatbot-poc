@@ -25,25 +25,23 @@ from langchain.memory import ConversationBufferMemory
 
 vertexai.init(project=PROJECT_ID, location=REGION)
 
-def create_session():
-    llm = VertexAI(model_name=MODEL)
-    retriever = GoogleVertexAISearchRetriever(
-                project_id=PROJECT_ID,
-                location_id=DATA_STORE_LOCATION,
-                data_store_id=DATA_STORE_ID,
-                get_extractive_answers=True,
-                max_documents=40,
-                max_extractive_segment_count=1,
-                max_extractive_answer_count=5,
-            )
-    multi_turn_retriever = GoogleVertexAIMultiTurnSearchRetriever(
-    project_id=PROJECT_ID, location_id=DATA_STORE_LOCATION, data_store_id=DATA_STORE_ID
-    )
-    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-    conversational_retrieval = ConversationalRetrievalChain.from_llm(
-        llm=llm, retriever=multi_turn_retriever, memory=memory
-    )
-    return conversational_retrieval
+llm = VertexAI(model_name=MODEL)
+retriever = GoogleVertexAISearchRetriever(
+            project_id=PROJECT_ID,
+            location_id=DATA_STORE_LOCATION,
+            data_store_id=DATA_STORE_ID,
+            get_extractive_answers=True,
+            max_documents=40,
+            max_extractive_segment_count=1,
+            max_extractive_answer_count=5,
+        )
+multi_turn_retriever = GoogleVertexAIMultiTurnSearchRetriever(
+project_id=PROJECT_ID, location_id=DATA_STORE_LOCATION, data_store_id=DATA_STORE_ID
+)
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+conversational_retrieval = ConversationalRetrievalChain.from_llm(
+    llm=llm, retriever=multi_turn_retriever, memory=memory
+)
 
 @app.route('/')
 def index():
