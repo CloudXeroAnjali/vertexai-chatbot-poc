@@ -19,15 +19,31 @@ os.environ["MODEL"] = MODEL
 
 import vertexai
 from langchain.llms import VertexAI
-from langchain.retrievers import GoogleVertexAISearchRetriever
+from langchain.retrievers import GoogleVertexAISearchRetriever,GoogleVertexAIMultiTurnSearchRetriever
+from langchain.chains import ConversationalRetrievalChain
+from langchain.memory import ConversationBufferMemory
 
 vertexai.init(project=PROJECT_ID, location=REGION)
 
 def create_session():
-    #llm = VertexAI(model_name=MODEL)
-    chat_model = ChatModel.from_pretrained("chat-bison@001")
-    chat = chat_model.start_chat()
-    return chat
+    llm = VertexAI(model_name=MODEL)
+    retriever = GoogleVertexAISearchRetriever(
+                project_id=PROJECT_ID,
+                location_id=DATA_STORE_LOCATION,
+                data_store_id=DATA_STORE_ID,
+                get_extractive_answers=True,
+                max_documents=40,
+                max_extractive_segment_count=1,
+                max_extractive_answer_count=5,
+            )
+    multi_turn_retriever = GoogleVertexAIMultiTurnSearchRetriever(
+    project_id=PROJECT_ID, location_id=DATA_STORE_LOCATION, data_store_id=DATA_STORE_ID
+    )
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+    conversational_retrieval = ConversationalRetrievalChain.from_llm(
+        llm=llm, retriever=multi_turn_retriever, memory=memory
+    )
+    return conversational_retrieval
 
 @app.route('/')
 def index():
@@ -41,9 +57,9 @@ def vertex_palm():
     else:
         user_input = request.form['user_input']
     
-    #result = conversational_retrieval({"question": user_input})
-    content = response(chat_model,user_input)
-    return jsonify(content=content)
+    result = conversational_retrieval({"question": user_input})
+    #content = response(chat_model,user_input)
+    return jsonify(content=result)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080, host='0.0.0.0')
