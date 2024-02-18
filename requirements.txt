@@ -1,3 +1,8 @@
-google-cloud-aiplatform >= 1.31.0
+google-cloud-aiplatform==1.36.0
 flask
 google-cloud-logging
+google-cloud-discoveryengine==0.11.2
+langchain==0.0.327
+pydantic==1.10.8
+typing-inspect==0.8.0
+typing_extensions==4.5.0
