@@ -5,7 +5,9 @@ import os
 
 app = Flask(__name__)
 PROJECT_ID = "vertex-ai-chatbot-414313"  # @param {type:"string"}
-
+LOCATION = "us-central1"   
+DATA_STORE_ID = "vertex-ai-chatbot-dataset_1708011349777"  # @param {type:"string"}
+DATA_STORE_LOCATION = "global"  # @param {type:"string"}
 REGION = "us-central1"  # @param {type:"string"}
 MODEL = "text-bison@001"  # @param {type:"string"}
 
