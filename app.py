@@ -9,7 +9,7 @@ LOCATION = "us-central1"
 DATA_STORE_ID = "vertex-ai-chatbot-dataset_1708011349777"  # @param {type:"string"}
 DATA_STORE_LOCATION = "global"  # @param {type:"string"}
 REGION = "us-central1"  # @param {type:"string"}
-MODEL = "text-bison@001"  # @param {type:"string"}
+MODEL = "chat-bison@001"  # @param {type:"string"}
 
 os.environ["DATA_STORE_ID"] = DATA_STORE_ID
 os.environ["PROJECT_ID"] = PROJECT_ID
