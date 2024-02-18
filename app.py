@@ -11,18 +11,17 @@ DATA_STORE_LOCATION = "global"  # @param {type:"string"}
 REGION = "us-central1"  # @param {type:"string"}
 MODEL = "text-bison@001"  # @param {type:"string"}
 
-os.environ["DATA_STORE_ID"] = DATA_STORE_ID
-os.environ["PROJECT_ID"] = PROJECT_ID
-os.environ["LOCATION_ID"] = DATA_STORE_LOCATION
-os.environ["REGION"] = REGION
-os.environ["MODEL"] = MODEL
-
 import vertexai
 from langchain.llms import VertexAI
 from langchain.retrievers import GoogleVertexAISearchRetriever
 
 vertexai.init(project=PROJECT_ID, location=REGION)
-llm = VertexAI(model_name=MODEL)
+
+def create_session():
+    ##llm = VertexAI(model_name=MODEL)
+    chat_model = ChatModel.from_pretrained("chat-bison@001")
+    chat = chat_model.start_chat()
+    return chat
 
 @app.route('/')
 def index():
@@ -37,7 +36,7 @@ def vertex_palm():
         user_input = request.form['user_input']
     
     #result = conversational_retrieval({"question": user_input})
-    #content = response(chat_model,user_input)
+    content = response(chat_model,user_input)
     return jsonify(content='')
 
 if __name__ == '__main__':
