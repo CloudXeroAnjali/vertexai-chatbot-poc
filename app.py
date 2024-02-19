@@ -37,6 +37,7 @@ def vertex_palm():
         user_input = request.form['user_input']
     chat_model = create_session()
     content = response(chat_model,user_input)
+    print(content,'anjali')
     return jsonify(content=content)
 
 if __name__ == '__main__':
