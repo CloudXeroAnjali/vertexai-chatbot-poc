@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, jsonify
 import vertexai
-from vertexai.language_models import ChatModel
 import os
+from langchain.llms import VertexAI
+from langchain.retrievers import GoogleVertexAISearchRetriever,GoogleVertexAIMultiTurnSearchRetriever
+from langchain.chains import ConversationalRetrievalChain
+from langchain.memory import ConversationBufferMemory
 
 app = Flask(__name__)
 PROJECT_ID = "vertex-ai-chatbot-414313"  # @param {type:"string"}
-LOCATION = "us-central1"   
 DATA_STORE_ID = "vertex-ai-chatbot-dataset_1708011349777"  # @param {type:"string"}
 DATA_STORE_LOCATION = "global"  # @param {type:"string"}
 REGION = "us-central1"  # @param {type:"string"}
@@ -16,12 +18,6 @@ os.environ["PROJECT_ID"] = PROJECT_ID
 os.environ["LOCATION_ID"] = DATA_STORE_LOCATION
 os.environ["REGION"] = REGION
 os.environ["MODEL"] = MODEL
-
-import vertexai
-from langchain.llms import VertexAI
-from langchain.retrievers import GoogleVertexAISearchRetriever,GoogleVertexAIMultiTurnSearchRetriever
-from langchain.chains import ConversationalRetrievalChain
-from langchain.memory import ConversationBufferMemory
 
 vertexai.init(project=PROJECT_ID, location=REGION)
 
